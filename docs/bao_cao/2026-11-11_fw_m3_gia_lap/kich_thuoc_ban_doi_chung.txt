@@ -1,0 +1,8 @@
+       270         18          0          0          0        548   Library Totals
+       270         18          0          0          0        548   Library Totals
+     15252        408      10340          0       7864       2688   Grand Totals
+     15252        408      10340          0       7864       2688   ELF Image Totals
+     15252        408      10340          0          0          0   ROM Totals
+    Total RO  Size (Code + RO Data)                25592 (  24.99kB)
+    Total RW  Size (RW Data + ZI Data)              7864 (   7.68kB)
+    Total ROM Size (Code + RO Data + RW Data)      25592 (  24.99kB)

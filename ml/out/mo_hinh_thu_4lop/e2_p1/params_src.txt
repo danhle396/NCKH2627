@@ -1,0 +1,1 @@
+ml/out/mo_hinh_thu_4lop/params_int8.npz

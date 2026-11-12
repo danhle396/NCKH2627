@@ -1,0 +1,17 @@
+mô hình gốc: ml/out/n2_11_d1/params_int8.npz; Dense (4, 512) → (2, 512)
+  hàng 0: 506/512 trọng số khác 0, bias 119  (giữ)
+  hàng 1: 488/512 trọng số khác 0, bias -53  (bỏ)
+  hàng 2: 0/512 trọng số khác 0, bias -1073741824  (bỏ)
+  hàng 3: 506/512 trọng số khác 0, bias -179  (giữ)
+  trọng số 5344, bias 66
+PASS  50 vector export_mem (seed 4): lớp 2 lớp (đổi 1 → 3) == lớp 4 lớp: 50/50; SCORE khác nhau ở 0/50
+PASS  109970 cửa sổ D1: lớp 2 lớp (đổi 1 → 3) == lớp 4 lớp ở 109970/109970; mô hình 4 lớp chọn lớp 1 hoặc 2 ở 0 cửa sổ
+      SCORE (score_shift 9) khác nhau ở 87/109970 cửa sổ (hai lớp: top2 luôn là lớp còn lại; bốn lớp: top2 có thể là logit IMPACT)
+      T_SCORE  0: phiếu FALL 4 lớp 3648, 2 lớp 3648, khác nhau 0
+      T_SCORE  4: phiếu FALL 4 lớp 3623, 2 lớp 3623, khác nhau 0
+      T_SCORE  8: phiếu FALL 4 lớp 3601, 2 lớp 3601, khác nhau 0
+      T_SCORE 16: phiếu FALL 4 lớp 3508, 2 lớp 3508, khác nhau 0
+      T_SCORE 32: phiếu FALL 4 lớp 3119, 2 lớp 3119, khác nhau 0
+      ma trận nhầm lẫn 2 lớp (hàng = thật NORMAL, FALL): [[106322, 111], [0, 3537]]
+xuất ml/out/n2_11_d1_2lop/params_int8.npz, quant_params.json
+PASS

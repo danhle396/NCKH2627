@@ -1,0 +1,20 @@
+# Sản phẩm build và mô phỏng: sinh lại được
+__pycache__/
+*.vvp
+# project Gowin: chỉ giữ cấu hình, bỏ kết quả Run All của IDE
+gowin/impl/*
+!gowin/impl/*_process_config.json
+*.gprj.user
+# firmware M3
+fw_arm/**/build/
+fw_arm/**/Objects/
+fw_arm/**/Listings/
+fw_arm/**/*.uvguix.*
+fw_arm/**/build_log.txt
+# dữ liệu tự thu lớn và log ghi bằng tools/ghi_uart.py
+data/raw/
+ket_qua_board/
+# file tạm của draw.io
+*.bkp
+# cấu hình Claude Code riêng từng máy
+.claude/settings.local.json

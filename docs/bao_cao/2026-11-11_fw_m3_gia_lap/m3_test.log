@@ -1,0 +1,12 @@
+PASS  CNN phần mềm trên M3 == golden E2 hai lớp: 150/150 cửa sổ (50 vector export_mem + 100 cửa sổ D1; lớp golden NORMAL 113, FALL 37)
+      số lệnh Cortex-M3 mỗi lần suy luận: 1140039…1200806 (trung vị 1170940) [giả lập Unicorn, đếm lệnh, chưa phải chu kỳ]
+PASS  cnn_stage_from_window == golden_inc.stage_of: 60/60
+PASS  cnn_selftest_stage(0..7) == luồng LFSR của export_inc.py: 8/8
+      chuỗi lớp [1, 1], đổi mã 1→3: trạng thái 2 (SUSPECT), mong đợi SUSPECT
+      chuỗi lớp [1, 0, 1], đổi mã 1→3: trạng thái 2 (SUSPECT), mong đợi SUSPECT
+      chuỗi lớp [0, 1, 0, 0, 1, 0], đổi mã 1→3: trạng thái 1 (không SUSPECT), mong đợi không
+      chuỗi lớp [1, 1, 1, 1], KHÔNG đổi mã: trạng thái 1 (không SUSPECT), mong đợi không
+PASS  2/3 FALL vẫn vào SUSPECT sau khi đổi mã; không đổi mã thì không bao giờ có phiếu
+PASS  tự gỡ cảm biến 4 bậc (imu_guard): khởi động cắt nguồn; mất INT → bậc 1 → 2 → 3 → 4 (MẤT CẢM BIẾN), 10 s sau thử lại và hồi phục; 6 trục đứng yên 1 s và 3 lần đọc lỗi → bậc 1. Đếm go_bus 3, reset_mem 1, cat_nguon 2, mat_cb 1
+PASS  WiFi AT + HTTP (module giả): khởi động 5 lệnh AT, GET /data (JSON), GET / (gzip 1.500 B, 2 khúc CIPSEND, vòng TX đầy giữa chừng), POST /huy gọi hủy cảnh báo, module im lặng → quá hạn, đóng kết nối, về chờ
+PASS

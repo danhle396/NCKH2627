@@ -1,0 +1,15 @@
+
+| Kiểm | Kết quả | Thời gian |
+|---|---|---|
+| E2: rtl/src = mô hình n2_11_p1 | PASS | 0 s |
+| tb_e2 (P = 1, 10 vector, mọi tầng) | PASS | 42 s |
+| tb_e2 (P = 4, 10 vector, mọi tầng) | PASS | 23 s |
+| O3: 2 lớp == 4 lớp (50 vector + 20.000 cửa sổ tổng hợp) | PASS | 18 s |
+| golden tăng dần == golden E2 hai lớp | PASS | 107 s |
+| export_inc: rtl/src, fw_arm/src/gen trùng bản xuất | PASS | 2 s |
+| tb_inc (APB, 58 + 8 bước, mọi tầng, phép âm) | PASS | 49 s |
+| firmware M3 biên dịch, không cảnh báo (15.69kB flash) | PASS | 4 s |
+| firmware trên giả lập M3 (m3_test.py) | PASS | 130 s |
+| gen_web_gz tái tạo đúng trang nén | PASS | 0 s |
+Icarus: Icarus Verilog version 0.9.7  (v0_9_7)
+TẤT CẢ PASS (SKIP = bỏ qua có ghi lý do)

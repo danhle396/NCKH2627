@@ -1,0 +1,10 @@
+golden tăng dần vs golden E2, mô hình ml/out/n2_11_d1_2lop/params_int8.npz (2 lớp)
+D1: 4495 đoạn cửa sổ liên tiếp, dài nhất 106, trung vị 21
+  PASS  D1 có ngã (cửa sổ 5076…5078): 3 bước; hợp lệ 0, khớp bit 0/0; cờ hợp lệ sai 0; MAC/bước 61824, đầu ra Conv/bước 480
+  PASS  D1 sinh hoạt (cửa sổ 25612…25717): 106 bước, SOFT_RST ở bước 30; hợp lệ 92, khớp bit 92/92; cờ hợp lệ sai 0; MAC/bước 61824, đầu ra Conv/bước 480
+  PASS  D1 ghép 6 đoạn có ngã (có chỗ nhảy): 53 bước; hợp lệ 46, khớp bit 46/46; cờ hợp lệ sai 0; MAC/bước 61824, đầu ra Conv/bước 480
+  PASS  D1 lần thử ngã #1441 (người 108, mã 906, 1669 mẫu): 97 bước; hợp lệ 90, khớp bit 90/90; cờ hợp lệ sai 0; MAC/bước 61824, đầu ra Conv/bước 480
+  PASS  41 lần thử ngã liên tục (lần dài nhất ở trên + 40 lần ngẫu nhiên, mỗi lần ≥ 50 bước): 41/41 lần khớp bit mọi bước hợp lệ
+  PASS  ngẫu nhiên + đoạn bão hòa, 0, xen kẽ: 60 bước, SOFT_RST ở bước 25; hợp lệ 46, khớp bit 46/46; cờ hợp lệ sai 0; MAC/bước 61824, đầu ra Conv/bước 480
+MAC mỗi bước: 61824 (E2 tính lại cả cửa sổ: 226.304 với 2 lớp) → ít hơn 3.7 lần
+PASS

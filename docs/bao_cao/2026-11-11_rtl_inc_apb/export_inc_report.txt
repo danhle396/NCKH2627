@@ -1,0 +1,6 @@
+ROM: 5608 byte = 5344 trọng số + 66 bias × 4 B; BASE [0, 480, 1760, 4320], BIAS_BASE 5344; 3 khối 2.048 × 8
+luồng chính: lần thử #1441 (người 108, mã 906, 1669 mẫu, sự kiện ở mẫu 762), bước 14…71 = 58 bước
+PASS  golden tăng dần == golden E2 ở 52/52 bước hợp lệ (luồng chính + tự kiểm)
+lớp từng bước luồng chính: 0111000000000000000000000001111000000000000000000000000000
+MAC mỗi bước 61824, đầu ra Conv mỗi bước 480
+tự kiểm: lớp 1, SCORE 20, logit [67425, 78128]

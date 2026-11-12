@@ -1,0 +1,28 @@
+// Tang Nano 4K - NCKH2627 - theo ke_hoach muc 12.5.5 (11/11/2026)
+// Part GW1NSR-LV4CQN48PC6/I5, goi QFN48P. Thao camera khoi P3 truoc khi dung.
+// Bank 0, 1 = 3,3 V; bank 3 = 1,8 V (so do nguyen ly Tang Nano 4K ban 3603)
+
+IO_LOC "clk27"    45; IO_PORT "clk27"    IO_TYPE=LVCMOS33 PULL_MODE=UP;
+IO_LOC "rst_n"    14; IO_PORT "rst_n"    IO_TYPE=LVCMOS18 PULL_MODE=UP BANK_VCCIO=1.8;
+
+// MPU6050 - I2C mem qua GPIO cua M3 (O6); keo len co san tren board
+IO_LOC "imu_scl"  44; IO_PORT "imu_scl"  IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8;
+IO_LOC "imu_sda"  46; IO_PORT "imu_sda"  IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=8;
+IO_LOC "imu_int"  43; IO_PORT "imu_int"  IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+
+// ESP-01S - UART0 cua M3
+IO_LOC "wifi_txd" 39; IO_PORT "wifi_txd" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "wifi_rxd" 40; IO_PORT "wifi_rxd" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+// USB-UART go loi - UART1 cua M3
+IO_LOC "dbg_txd"  41; IO_PORT "dbg_txd"  IO_TYPE=LVCMOS33 DRIVE=8;
+IO_LOC "dbg_rxd"  42; IO_PORT "dbg_rxd"  IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+// Bank 3 (1,8 V): lai transistor, nut
+IO_LOC "wifi_rst" 18; IO_PORT "wifi_rst" IO_TYPE=LVCMOS18 DRIVE=8 BANK_VCCIO=1.8;
+IO_LOC "sens_pwr" 17; IO_PORT "sens_pwr" IO_TYPE=LVCMOS18 DRIVE=8 BANK_VCCIO=1.8;
+IO_LOC "buz"      16; IO_PORT "buz"      IO_TYPE=LVCMOS18 DRIVE=8 BANK_VCCIO=1.8;
+IO_LOC "btn_n"    15; IO_PORT "btn_n"    IO_TYPE=LVCMOS18 PULL_MODE=UP BANK_VCCIO=1.8;
+
+// LED tren board (chan MODE)
+IO_LOC "led"      10; IO_PORT "led"      IO_TYPE=LVCMOS33 DRIVE=8;

@@ -1,0 +1,6 @@
+netlist: 3 pROM, 1 SDPB, 2 MULT, 176 dòng INIT_RAM
+KET QUA: 66 buoc (58 luong chinh + 8 tu kiem); 52 buoc hop le: 52 khop CLASS/SCORE/LOGIT, 0 khop l1/l2/l3
+CYCLES/buoc = 70010..70010 (2.59 ms o 27 MHz)
+PASS
+thời gian mô phỏng: 1393 s
+exit 0

@@ -1,0 +1,1 @@
+Max Frequency Summary: NO. Clock Name Constraint Actual Fmax Logic Level Entity 1 clk27 27.000(MHz) 41.095(MHz) 9 TOP Total Negative Slack Summary: Clock Name Analysis Type Endpoint

@@ -1,0 +1,2 @@
+PASS  tự kiểm: 200 cách gắn ngẫu nhiên (hoán vị, dấu, offset ±150 LSB, nhiễu) đều tìm đúng trục và offset ±2 LSB
+PASS
