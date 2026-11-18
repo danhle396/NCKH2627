@@ -974,8 +974,15 @@ Không làm được trên máy: H1–H4 (board, đo dòng, **PCB chưa vẽ** v
 | Tầng 2 C == Python, đường ống thiết bị == `windowing.py` [giả lập] | 15.7 | Cùng log thô thật chạy qua thiết bị và Python |
 | Fmax 41,1 MHz, logic 24 %, BSRAM 8/10 [P&R] | `PROJECT_NCKH.md`, `2026-11-11_gowin_s0_buoc4` | Giữ (là báo cáo của chính bitstream nạp lên board), nhưng ghi kèm "bitstream đã chạy trên board" và xác nhận chân xung nhịp 45 không lỗi thời gian (H1) |
 | Flash 17,5 KB / RAM 5,75 KB [linker] | `PROJECT_NCKH.md`, 15.7 | Giữ (kích thước của chính ảnh nạp), ghi kèm "ảnh đã chạy trên board" |
+| Ngăn xếp ~464 B [ước tính tĩnh của linker], đọc I²C ~0,6 ms, 100 Hz không mất mẫu [ước tính] | 15.7, `PROJECT_NCKH.md` | Dòng `TN,…` mỗi 10 s (ngăn xếp đo bằng mẫu tô, thời gian đo bằng DWT) |
 | Dòng ESP-01S ~170 mA, khối lượng 70–125 g, dòng đỉnh ~0,8 A, sụt áp Q3 0,1–0,2 V, thời gian xả 47 ms, 0,4 ms đọc I²C [ước tính, datasheet] | mục 7.5, 12.1, 12.5 | Số đo H3 (dòng từng nhánh), cân thiết bị, đo điện áp VCC_IMU, thời gian đo bằng DWT |
 | Độ chính xác nhận dạng: chưa có số nào (mô hình thử ngẫu nhiên) | – | Chỉ báo số đo trên **dữ liệu bắp tay thật**, tập kiểm tra tách theo người (sau bước 7, 7b) |
 | Năng lượng mỗi lần suy luận (Nội dung 5): chưa có | – | Đo dòng × thời gian thật (H3 + bước 8) |
 
 Báo cáo cũ `docs/bao_cao/2026-11-11_*`, `2026-11-12_*` giữ làm nhật ký quá trình (có ngày, có nhãn), nhưng không trích số của chúng vào tài liệu trình bày nữa khi đã có số đo.
+
+### 15.9 Đo cho H1b và sửa vùng ngăn xếp (12/11/2026)
+
+- Firmware in `TN,<ngăn xếp đã dùng>,<vòng lặp dài nhất µs>,<đọc I²C dài nhất µs>,<mẫu 100 Hz / 10 s>,<lỗi>` mỗi 10 s: số đo thật cho H1b.
+- **Sửa rủi ro khởi động:** ngăn xếp trước nằm trong vùng ZI mà MicroLIB (`__main`) xóa về 0 trong lúc đang chạy trên chính ngăn xếp đó. Nay ngăn xếp là vùng `ARM_LIB_STACK` (EMPTY, 1 KB ở đỉnh SRAM) trong `fw_arm/gw1ns4c_8k.sct`; `Reset_Handler` tô mẫu để đo. Chưa chứng minh bản cũ hỏng thật, nhưng các test trước đó không chạy qua đường khởi động.
+- Thêm test khởi động cả ảnh firmware trên giả lập (`m3_test.py` mục 11): vector reset → `__main` → vòng lặp chính; mẫu tô còn nguyên, ZI được dọn đúng.

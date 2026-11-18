@@ -95,5 +95,5 @@ Mô hình THỬ ngẫu nhiên `THU_NGAU_NHIEN` (`tools/tao_mo_hinh_thu.py`), kh�
 
 ## Ghi dữ liệu thô và UART gỡ lỗi
 
-- Khởi động: `TK,<đạt>,<cycles>,vi_tri=<…>,mo_hinh=<…>`; hiệu chỉnh con quay xong (2 s đứng yên): `GC,<x>,<y>,<z>`; mỗi bước: `S,<ms>,<bước>,<valid>,<lớp 0/3>,<score>,<logit0>,<logit1>,<cycles>,<trạng thái>`.
+- Khởi động: `TK,<đạt>,<cycles>,vi_tri=<…>,mo_hinh=<…>`; hiệu chỉnh con quay xong (2 s đứng yên): `GC,<x>,<y>,<z>`; mỗi 10 s: `TN,<ngăn xếp đã dùng B>,<vòng lặp dài nhất µs>,<đọc I²C dài nhất µs>,<mẫu 100 Hz trong 10 s>,<lần đọc lỗi>` (số đo cho H1b); mỗi bước: `S,<ms>,<bước>,<valid>,<lớp 0/3>,<score>,<logit0>,<logit1>,<cycles>,<trạng thái>`.
 - Dữ liệu thô 100 Hz (`core/raw_log.h`): dòng `t,ax,ay,az,gx,gy,gz,btn` — trục cảm biến, con quay đã trừ offset, chưa đổi trục. Qua WiFi: `GET http://192.168.4.1/raw` (kết nối giữ mở). Qua UART1: lệnh `R1` bắt đầu, `R0` dừng (khi đó không in dòng `S`). Thu bằng `tools/thu_bap_tay.py`; cắt cửa sổ bằng `tools/windowing.py` (đổi trục, tiền xử lý đúng như thiết bị).

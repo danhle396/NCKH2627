@@ -19,4 +19,7 @@ uint32_t board_imu_int_take(void);
 void     board_wdt_start(uint32_t ms);
 void     board_wdt_kick(void);
 
+/* đo trên board (kế hoạch H1b): số byte ngăn xếp đã từng dùng (startup.c tô mẫu lúc reset) */
+uint32_t board_stack_dung(void);
+
 #endif

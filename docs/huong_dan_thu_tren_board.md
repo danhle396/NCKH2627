@@ -24,6 +24,7 @@ Nối dây theo bảng chân mục 12.5.2 (GY-521: SCL 44, SDA 46, INT 43; ESP-0
 | Kiểm | Nhìn thấy | Pass |
 |---|---|---|
 | Khởi động | dòng `TK,1,70010,vi_tri=bap_tay,mo_hinh=THU_NGAU_NHIEN` (mô hình thử: kết quả nhận dạng vô nghĩa cho tới bước 7) | tự kiểm bộ tăng tốc đạt; **CYCLES = 70.010** (khớp mô phỏng) → thời gian suy luận = 2,59 ms [board] |
+| Số đo H1b | dòng `TN,<stack B>,<vòng lặp µs>,<I²C µs>,<mẫu/10 s>,<lỗi>` mỗi 10 s | stack < 1.024 B; mẫu = 1.000 ± 10 mỗi 10 s; lỗi = 0; ghi số vào báo cáo thay ước tính (kế hoạch 15.8) |
 | Đọc cảm biến | các dòng `S,<ms>,<bước>,…` mỗi 0,32 s; từ bước thứ 8 cột 4 = 1 (VALID) | 100 Hz không mất mẫu (đếm bước: 1 bước / 320 ms ± 1 %) |
 | ESP-01S | điện thoại thấy WiFi `NCKH2627` (mật khẩu `nckh2627`, đổi trong `main.c`), mở `http://192.168.4.1/` | trang tải được, số liệu đổi mỗi 300 ms |
 | Nút Hủy trên web | bấm khi còi đang kêu | Safety FSM về MONITOR |

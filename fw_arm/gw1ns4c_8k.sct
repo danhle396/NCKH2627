@@ -1,11 +1,15 @@
 ; gw1ns4c_8k.sct — Gowin_EMPU GW1NS-4C: flash 32 KB ở 0x00000000, SRAM 8 KB ở 0x20000000 (IPUG931 bảng 2-1)
+; Ngăn xếp 1 KB ở đỉnh SRAM, vùng EMPTY riêng: MicroLIB (__main) KHÔNG xóa vùng này (để Reset_Handler tô mẫu đo mức dùng,
+; và để __main không xóa chính ngăn xếp đang chạy như khi ngăn xếp nằm trong ZI).
 LR_IROM1 0x00000000 0x00008000 {
   ER_IROM1 0x00000000 0x00008000 {
     *.o (RESET, +First)
     *(InRoot$$Sections)
     .ANY (+RO)
   }
-  RW_IRAM1 0x20000000 0x00002000 {
+  RW_IRAM1 0x20000000 0x00001C00 {
     .ANY (+RW +ZI)
+  }
+  ARM_LIB_STACK 0x20002000 EMPTY -0x00000400 {
   }
 }

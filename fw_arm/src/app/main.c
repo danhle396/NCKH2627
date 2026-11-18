@@ -4,7 +4,9 @@
  *              một lần (7.5.4), watchdog 2 s
  *   mỗi vòng: tự gỡ cảm biến (imu_guard) → đọc MPU6050 khi có ngắt INT → app (tiền xử lý, khối) → mỗi 16 mẫu 50 Hz gửi
  *             144 byte STAGE qua APB → DONE (USER_INT0) → app_on_cnn (đổi mã 1 → 3, Safety FSM) → còi, LED, web
- * Log UART1: "TK,<đạt>,<cycles>,…" khi khởi động; "GC,<offx>,<offy>,<offz>" khi hiệu chỉnh con quay xong; "S,…" mỗi bước.
+ * Log UART1: "TK,<đạt>,<cycles>,…" khi khởi động; "GC,<offx>,<offy>,<offz>" khi hiệu chỉnh con quay xong; "S,…" mỗi bước;
+ *   mỗi 10 s "TN,<stack B>,<vòng lặp dài nhất µs>,<đọc I2C dài nhất µs>,<mẫu 100 Hz trong 10 s>,<đọc lỗi>" — số ĐO
+ *   trên board cho kế hoạch H1b (thay ước tính: stack ~464 B, I2C ~0,6 ms, 100 Hz không mất mẫu).
  * Dữ liệu thô 100 Hz (core/raw_log.h): qua WiFi http://192.168.4.1/raw, hoặc qua UART1 khi gửi lệnh "R1" (dừng: "R0");
  * lúc ghi thô qua UART1 thì không in "S,…" để hai luồng không chen nhau. Thu bằng tools/thu_bap_tay.py.
  * Thời gian bộ tăng tốc = CYCLES / 27 MHz; CNN phần mềm (bước 8) đo bằng DWT khi CNN_SW_DOI_CHUNG = 1.
@@ -72,6 +74,7 @@ int main(void)
     int8_t stage[CNN_STAGE_BYTES];
     uint32_t cyc = 0, t_tick, t_submit = 0;
     uint8_t pending = 0;
+    uint32_t t_tn = 0, vong_max = 0, i2c_max = 0, n_mau = 0, n_loi = 0, c_vong = 0;
 
     board_init();
     uart_init(UART_DBG, 115200u);
@@ -94,8 +97,22 @@ int main(void)
     t_tick = board_ms();
 
     for (;;) {
+        uint32_t c_now = board_cycles();
+        if (c_vong && c_now - c_vong > vong_max) vong_max = c_now - c_vong;
+        c_vong = c_now;
         g_now = board_ms();
         board_wdt_kick();
+        if (g_now - t_tn >= 10000u) {                 /* TN: số đo cho H1b */
+            if (t_tn && !g_raw_uart) {
+                sbuf_t b = { line, 0, sizeof(line) };
+                sb_s(&b, "TN,"); sb_u(&b, board_stack_dung());
+                sb_s(&b, ","); sb_u(&b, vong_max / (SYSCLK_HZ / 1000000u));
+                sb_s(&b, ","); sb_u(&b, i2c_max / (SYSCLK_HZ / 1000000u));
+                sb_s(&b, ","); sb_u(&b, n_mau); sb_s(&b, ","); sb_u(&b, n_loi); sb_s(&b, "\n");
+                dbg(line);
+            }
+            t_tn = g_now; vong_max = i2c_max = n_mau = n_loi = 0;
+        }
 
         /* ---- cảm biến: tự gỡ (7.5) ---- */
         ig_act_t act = imu_guard_poll(&g_ig, g_now);
@@ -112,7 +129,10 @@ int main(void)
         g_app.sensor_lost = g_ig.lost;
         if (board_imu_int_take() && imu_guard_reading(&g_ig)) {
             int16_t raw[6];
+            uint32_t c0 = board_cycles();
             int ok = imu_read(raw);
+            if (board_cycles() - c0 > i2c_max) i2c_max = board_cycles() - c0;
+            if (ok) n_mau++; else n_loi++;
             imu_guard_sample(&g_ig, g_now, ok, raw);
             if (ok && !g_gc.done && gyro_cal_push(&g_gc, raw)) {     /* hiệu chỉnh con quay xong (đứng yên 2 s) */
                 sbuf_t b = { line, 0, sizeof(line) };

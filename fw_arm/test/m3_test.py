@@ -423,6 +423,43 @@ def main():
     log(f"{'PASS' if ok10 else 'FAIL'}  tầng 2 bắp tay C == Python: {tong - bad}/{tong} bước trùng (quyết định, dấu hiệu, "
         f"khối); kịch bản {tom} [ngưỡng thử ngẫu nhiên, KHÔNG phải ngưỡng thật]")
     ok_all &= ok10
+
+    # 11. khởi động cả ảnh firmware (fw_arm/build/nckh_m3.axf): vector reset → Reset_Handler (tô ngăn xếp) → __main
+    #     (chép RW, xóa ZI) → main → vòng lặp chính (lần gọi wifi_poll đầu tiên). Ngoại vi là RAM giả (đọc 0).
+    fw = ROOT / "fw_arm/build/nckh_m3.axf"
+    if fw.exists():
+        segs, sym = load_elf(fw)
+        uc = Uc(UC_ARCH_ARM, UC_MODE_THUMB | UC_MODE_MCLASS)
+        uc.mem_map(0x00000000, 0x00100000)
+        uc.mem_map(0x20000000, 0x00010000)
+        uc.mem_map(0x40000000, 0x00020000)          # ngoại vi APB/AHB (TIMER … SYSCON)
+        uc.mem_map(0xE0000000, 0x00100000)          # NVIC, SysTick, DWT, SCB
+        uc.mem_write(0x20000000, b"\xEE" * 0x2000)  # SRAM bẩn như lúc bật nguồn: phải được __main dọn đúng
+        for a_, d_ in segs:
+            if a_ < 0x20000000:
+                uc.mem_write(a_, d_)
+        sp0, pc0 = struct.unpack("<II", bytes(uc.mem_read(0, 8)))
+        base, lim = sym["Image$$ARM_LIB_STACK$$ZI$$Base"], sym["Image$$ARM_LIB_STACK$$ZI$$Limit"]
+        uc.reg_write(UC_ARM_REG_SP, sp0)
+        stop = sym["wifi_poll"] & ~1                # ký hiệu hàm Thumb có bit 0 = 1, PC thì không
+        try:
+            uc.emu_start(pc0 | 1, stop, count=5_000_000)
+            den = uc.reg_read(UC_ARM_REG_PC) == stop
+        except Exception as e:                      # noqa: BLE001
+            den = False
+            log(f"      lỗi khi chạy: {e}")
+        stk = np.frombuffer(bytes(uc.mem_read(base, lim - base)), "<u4")
+        con_mau = int(np.argmax(stk != 0x5AA5C33C)) * 4 if np.any(stk != 0x5AA5C33C) else lim - base
+        dung = (lim - base) - con_mau
+        zi = sym.get("g_app")
+        zi_ok = zi is not None and bytes(uc.mem_read(zi, 64)) != b"\xEE" * 64
+        ok11 = den and sp0 == lim and con_mau > 0 and zi_ok
+        log(f"{'PASS' if ok11 else 'FAIL'}  khởi động ảnh firmware: SP đầu = đỉnh ARM_LIB_STACK (0x{sp0:08X}), tới vòng lặp "
+            f"chính {'có' if den else 'KHÔNG'}; mẫu tô ngăn xếp còn {con_mau} B (__main không xóa), đã dùng ~{dung} B tới đây; "
+            f"ZI được dọn {'đúng' if zi_ok else 'SAI'}")
+        ok_all &= ok11
+    else:
+        log("SKIP  khởi động ảnh firmware: chưa có fw_arm/build/nckh_m3.axf (chạy bash fw_arm/build.sh)")
     log("PASS" if ok_all else "FAIL")
     if a.report:
         a.report.mkdir(parents=True, exist_ok=True)
